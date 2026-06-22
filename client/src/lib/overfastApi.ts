@@ -4,6 +4,46 @@
 
 const BASE_URL = "https://overfast-api.tekrop.fr";
 
+export interface OWSearchResult {
+  blizzard_id: string;
+  name: string;
+  avatar: string | null;
+  namecard: string | null;
+  title: string | null;
+  career_url: string;
+  is_public: boolean;
+  last_updated_at: number | null;
+}
+
+// Search players by name (returns multiple results)
+export async function searchPlayers(name: string): Promise<OWSearchResult[]> {
+  const res = await fetch(`${BASE_URL}/players?name=${encodeURIComponent(name)}`);
+  if (!res.ok) throw new Error(`搜索失败 (${res.status})`);
+  const data = await res.json();
+  return (data.results ?? []) as OWSearchResult[];
+}
+
+// Fetch player data by Blizzard internal ID (from search results)
+export async function fetchPlayerDataById(blizzardId: string, displayName: string): Promise<OWPlayerData> {
+  const [summaryRes, statsRes] = await Promise.all([
+    fetch(`${BASE_URL}/players/${encodeURIComponent(blizzardId)}/summary`),
+    fetch(`${BASE_URL}/players/${encodeURIComponent(blizzardId)}/stats/summary?gamemode=competitive`),
+  ]);
+
+  if (!summaryRes.ok) {
+    if (summaryRes.status === 404) throw new Error("找不到该玩家，请确认账号存在且战绩设为公开");
+    throw new Error(`获取玩家信息失败 (${summaryRes.status})`);
+  }
+  if (!statsRes.ok) {
+    if (statsRes.status === 404) throw new Error("该玩家暂无本赛季竞技数据，或战绩未公开");
+    throw new Error(`获取战绩数据失败 (${statsRes.status})`);
+  }
+
+  const summary = await summaryRes.json() as OWPlayerSummary;
+  const stats = await statsRes.json() as OWStatsSummary;
+  return { summary, stats, battletag: displayName };
+}
+
 export interface OWPlayerSummary {
   username: string;
   avatar: string;

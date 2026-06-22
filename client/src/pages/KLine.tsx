@@ -12,10 +12,13 @@ import { personalKLine } from "@/lib/mockData";
 import { buildCandleData } from "@/lib/candleData";
 import {
   fetchPlayerData,
+  fetchPlayerDataById,
+  searchPlayers,
   buildKLineFromPlayerData,
   formatRank,
   rankColor,
   type OWPlayerData,
+  type OWSearchResult,
   type SimulatedCandle,
 } from "@/lib/overfastApi";
 import { toast } from "sonner";
@@ -23,7 +26,7 @@ import {
   TrendingUp, TrendingDown,
   BarChart2, Activity, Target, Shield,
   Link2, ExternalLink, RefreshCw, User, AlertCircle,
-  Globe, MapPin, ChevronRight, Award,
+  Globe, MapPin, ChevronRight, Award, Search, CheckCircle, Lock,
 } from "lucide-react";
 
 type ShowCount = 20 | 30 | 50;
@@ -67,6 +70,12 @@ function ServerToggle({ mode, onChange }: { mode: ServerMode; onChange: (m: Serv
 }
 
 // ── Onboarding / Input section ────────────────────────────────────────────────
+const EXAMPLE_ACCOUNTS = [
+  { name: "Flats", tag: "Flats", role: "坦克主播", games: 157 },
+  { name: "KarQ", tag: "KarQ", role: "教学主播", games: 53 },
+  { name: "TeKrop", tag: "TeKrop-2217", role: "API 作者", games: 19 },
+];
+
 function OnboardingInput({ onLoadDemo, onLoadIntl }: {
   onLoadDemo: () => void;
   onLoadIntl: (data: OWPlayerData) => void;
@@ -75,27 +84,79 @@ function OnboardingInput({ onLoadDemo, onLoadIntl }: {
   const [input, setInput] = useState("");
   const [loadState, setLoadState] = useState<LoadState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [searchResults, setSearchResults] = useState<OWSearchResult[]>([]);
+  const [showResults, setShowResults] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => { inputRef.current?.focus(); }, []);
+
+  // Debounced search as user types
+  const handleInputChange = (val: string) => {
+    setInput(val);
+    setErrorMsg("");
+    setLoadState("idle");
+    setShowResults(false);
+
+    if (mode !== "intl") return;
+    // Only search if looks like a name (no # yet, length >= 2)
+    const cleanVal = val.replace(/#.*/, "").trim();
+    if (cleanVal.length < 2) { setSearchResults([]); return; }
+
+    if (searchTimer.current) clearTimeout(searchTimer.current);
+    searchTimer.current = setTimeout(async () => {
+      try {
+        const results = await searchPlayers(cleanVal);
+        setSearchResults(results.slice(0, 6));
+        setShowResults(results.length > 0);
+      } catch { /* silent */ }
+    }, 500);
+  };
+
+  const handleSelectResult = async (result: OWSearchResult) => {
+    setShowResults(false);
+    setInput(result.name);
+    setLoadState("loading");
+    setErrorMsg("");
+    try {
+      const data = await fetchPlayerDataById(result.blizzard_id, result.name);
+      setLoadState("loaded");
+      toast.success(`已加载 ${data.summary.username} 的赛季数据！`, { duration: 3000 });
+      onLoadIntl(data);
+    } catch (err: unknown) {
+      setLoadState("error");
+      const msg = err instanceof Error ? err.message : "加载失败，请稍后重试";
+      setErrorMsg(msg);
+      toast.error(msg);
+    }
+  };
 
   const handleSubmit = async () => {
     const val = input.trim();
     if (!val) {
-      toast.error(mode === "intl" ? "请输入 BattleTag（如 PlayerName#1234）" : "请输入网易大神分享链接");
+      toast.error(mode === "intl" ? "请输入玩家名称或 BattleTag" : "请输入网易大神分享链接");
       return;
     }
 
     if (mode === "intl") {
-      // Validate BattleTag format: Name#1234
-      if (!val.includes("#") || val.split("#").length !== 2) {
-        toast.error("BattleTag 格式错误，正确格式：PlayerName#1234");
-        return;
-      }
       setLoadState("loading");
       setErrorMsg("");
+      setShowResults(false);
       try {
-        const data = await fetchPlayerData(val);
+        let data: OWPlayerData;
+        if (val.includes("#")) {
+          // Direct BattleTag lookup
+          data = await fetchPlayerData(val);
+        } else {
+          // Search by name, use first public result
+          const results = await searchPlayers(val);
+          if (results.length === 0) throw new Error("未找到该玩家，请检查名称拼写（大小写敏感）");
+          const publicResult = results.find(r => r.is_public) ?? results[0];
+          if (!publicResult.is_public) {
+            throw new Error("找到的账号战绩未公开，请在暴雪官网将战绩设为公开后重试");
+          }
+          data = await fetchPlayerDataById(publicResult.blizzard_id, publicResult.name);
+        }
         setLoadState("loaded");
         toast.success(`已加载 ${data.summary.username} 的赛季数据！`, { duration: 3000 });
         onLoadIntl(data);
@@ -106,7 +167,6 @@ function OnboardingInput({ onLoadDemo, onLoadIntl }: {
         toast.error(msg);
       }
     } else {
-      // CN server: simulate loading
       setLoadState("loading");
       await new Promise(r => setTimeout(r, 1800));
       setLoadState("idle");
@@ -116,7 +176,8 @@ function OnboardingInput({ onLoadDemo, onLoadIntl }: {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") handleSubmit();
+    if (e.key === "Enter") { setShowResults(false); handleSubmit(); }
+    if (e.key === "Escape") setShowResults(false);
   };
 
   const isLoading = loadState === "loading";
@@ -163,62 +224,137 @@ function OnboardingInput({ onLoadDemo, onLoadIntl }: {
 
             {/* Label */}
             <div style={{ fontFamily: "Rajdhani, sans-serif", fontWeight: 700, fontSize: "0.85rem", color: "#00B4D8", letterSpacing: "0.1em", marginBottom: 4 }}>
-              {mode === "intl" ? "输入你的 BattleTag" : "输入网易大神分享链接"}
+              {mode === "intl" ? "搜索玩家 / 输入 BattleTag" : "输入网易大神分享链接"}
             </div>
             <div style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#475569", marginBottom: 14, lineHeight: 1.6 }}>
               {mode === "intl"
-                ? "外服战网 BattleTag，格式：PlayerName#1234（需要战绩设为公开）"
+                ? "输入玩家名称自动搜索，或直接输入完整 BattleTag（PlayerName#1234）"
                 : "在网易大神 App 查看守望先锋战绩后，点击右上角分享，复制链接粘贴到下方"}
             </div>
 
-            {/* Input row */}
-            <div className="flex gap-2 mb-3">
-              <div className="flex-1 relative">
-                <div style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#475569", pointerEvents: "none" }}>
-                  <Link2 size={14} />
+            {/* Input row with search dropdown */}
+            <div className="relative mb-3">
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <div style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#475569", pointerEvents: "none" }}>
+                    {isLoading ? <RefreshCw size={14} style={{ animation: "spin 1s linear infinite" }} /> : <Search size={14} />}
+                  </div>
+                  <input
+                    ref={inputRef}
+                    type={mode === "intl" ? "text" : "url"}
+                    value={input}
+                    onChange={e => handleInputChange(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={mode === "intl" ? "玩家名称或 PlayerName#1234" : "https://act.ds.163.com/f0834ac50394246e/detail?customerToken=..."}
+                    style={{
+                      width: "100%",
+                      background: loadState === "error" ? "rgba(239,68,68,0.06)" : "rgba(255,255,255,0.04)",
+                      border: `1px solid ${loadState === "error" ? "rgba(239,68,68,0.4)" : "rgba(0,180,216,0.2)"}`,
+                      borderRadius: 2,
+                      padding: "10px 12px 10px 36px",
+                      fontFamily: "Noto Sans SC, sans-serif",
+                      fontSize: "0.85rem",
+                      color: "#E2E8F0",
+                      outline: "none",
+                      transition: "border-color 0.15s",
+                      boxSizing: "border-box",
+                    }}
+                    onFocus={e => { if (loadState !== "error") e.target.style.borderColor = "rgba(0,180,216,0.5)"; }}
+                    onBlur={e => { setTimeout(() => setShowResults(false), 200); if (loadState !== "error") e.target.style.borderColor = "rgba(0,180,216,0.2)"; }}
+                  />
                 </div>
-                <input
-                  ref={inputRef}
-                  type={mode === "intl" ? "text" : "url"}
-                  value={input}
-                  onChange={e => { setInput(e.target.value); setErrorMsg(""); setLoadState("idle"); }}
-                  onKeyDown={handleKeyDown}
-                  placeholder={mode === "intl" ? "PlayerName#1234" : "https://act.ds.163.com/f0834ac50394246e/detail?customerToken=..."}
-                  style={{
-                    width: "100%",
-                    background: loadState === "error" ? "rgba(239,68,68,0.06)" : "rgba(255,255,255,0.04)",
-                    border: `1px solid ${loadState === "error" ? "rgba(239,68,68,0.4)" : "rgba(0,180,216,0.2)"}`,
-                    borderRadius: 2,
-                    padding: "10px 12px 10px 36px",
-                    fontFamily: "Noto Sans SC, sans-serif",
-                    fontSize: "0.85rem",
-                    color: "#E2E8F0",
-                    outline: "none",
-                    transition: "border-color 0.15s",
-                    boxSizing: "border-box",
-                  }}
-                  onFocus={e => { if (loadState !== "error") e.target.style.borderColor = "rgba(0,180,216,0.5)"; }}
-                  onBlur={e => { if (loadState !== "error") e.target.style.borderColor = "rgba(0,180,216,0.2)"; }}
-                />
+                <button
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className="ow-btn-primary flex items-center gap-2 px-5 py-2.5 text-sm"
+                  style={{ flexShrink: 0, opacity: isLoading ? 0.7 : 1 }}
+                >
+                  {isLoading ? "加载中..." : "查 K 线"}
+                </button>
               </div>
-              <button
-                onClick={handleSubmit}
-                disabled={isLoading}
-                className="ow-btn-primary flex items-center gap-2 px-5 py-2.5 text-sm"
-                style={{ flexShrink: 0, opacity: isLoading ? 0.7 : 1 }}
-              >
-                {isLoading
-                  ? <RefreshCw size={14} style={{ animation: "spin 1s linear infinite" }} />
-                  : <TrendingUp size={14} />}
-                {isLoading ? "加载中..." : "加载K线"}
-              </button>
+
+              {/* Search results dropdown */}
+              {showResults && searchResults.length > 0 && (
+                <div style={{
+                  position: "absolute", top: "calc(100% + 4px)", left: 0, right: 60,
+                  background: "#0D1120", border: "1px solid rgba(0,180,216,0.3)",
+                  borderRadius: 2, zIndex: 50, overflow: "hidden",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                }}>
+                  {searchResults.map((r, i) => (
+                    <button
+                      key={r.blizzard_id}
+                      onMouseDown={() => handleSelectResult(r)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 text-left transition-all duration-100"
+                      style={{
+                        borderBottom: i < searchResults.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                        background: "transparent",
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,180,216,0.08)"; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
+                    >
+                      {r.avatar ? (
+                        <img src={r.avatar} alt={r.name} style={{ width: 28, height: 28, borderRadius: "50%", flexShrink: 0, border: "1px solid rgba(0,180,216,0.2)" }} />
+                      ) : (
+                        <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(0,180,216,0.1)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <User size={14} color="#00B4D8" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div style={{ fontFamily: "Rajdhani, sans-serif", fontWeight: 600, fontSize: "0.85rem", color: "#E2E8F0" }}>{r.name}</div>
+                        {r.title && <div style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.68rem", color: "#475569" }}>{r.title}</div>}
+                      </div>
+                      {r.is_public
+                        ? <CheckCircle size={13} color="#22C55E" style={{ flexShrink: 0 }} />
+                        : <Lock size={13} color="#EF4444" style={{ flexShrink: 0 }} />}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Error message */}
             {errorMsg && (
               <div className="flex items-start gap-2 p-2.5 mb-3 rounded-sm" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)" }}>
                 <AlertCircle size={12} color="#EF4444" style={{ flexShrink: 0, marginTop: 2 }} />
-                <span style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#FCA5A5", lineHeight: 1.6 }}>{errorMsg}</span>
+                <div style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#FCA5A5", lineHeight: 1.6 }}>
+                  <div>{errorMsg}</div>
+                  {errorMsg.includes("公开") && (
+                    <a href="https://overwatch.blizzard.com/zh-tw/career/" target="_blank" rel="noopener noreferrer"
+                      style={{ color: "#00B4D8", textDecoration: "underline", fontSize: "0.7rem", marginTop: 4, display: "inline-block" }}>
+                      点此前往暴雪官网设置战绩公开 →
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Example accounts (intl mode only) */}
+            {mode === "intl" && loadState === "idle" && !errorMsg && (
+              <div className="mb-3">
+                <div style={{ fontFamily: "Rajdhani, sans-serif", fontSize: "0.7rem", color: "#334155", letterSpacing: "0.1em", marginBottom: 6 }}>TRY THESE PUBLIC ACCOUNTS</div>
+                <div className="flex flex-wrap gap-2">
+                  {EXAMPLE_ACCOUNTS.map(acc => (
+                    <button
+                      key={acc.tag}
+                      onClick={() => { setInput(acc.tag); handleInputChange(acc.tag); }}
+                      className="flex items-center gap-1.5 px-2.5 py-1 transition-all duration-150"
+                      style={{
+                        fontFamily: "Rajdhani, sans-serif", fontWeight: 600, fontSize: "0.75rem",
+                        color: "#64748B", letterSpacing: "0.05em",
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        borderRadius: 2,
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = "#00B4D8"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(0,180,216,0.3)"; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = "#64748B"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.08)"; }}
+                    >
+                      <CheckCircle size={10} />
+                      {acc.name}
+                      <span style={{ color: "#334155", fontSize: "0.65rem" }}>{acc.role}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -236,7 +372,7 @@ function OnboardingInput({ onLoadDemo, onLoadIntl }: {
                 <ExternalLink size={12} color="#00B4D8" style={{ flexShrink: 0 }} />
                 <span style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#94A3B8", lineHeight: 1.5 }}>
                   <span style={{ color: "#00B4D8", fontWeight: 600 }}>如何设置战绩公开？</span>
-                  {" "}登录暴雪官网 → 生涯 → 右上角隐私设置 → 改为公开
+                  {"登录暴雪官网 → 生涯 → 右上角隐私设置 → 战绩公开"}
                 </span>
               </a>
             ) : (
@@ -252,7 +388,7 @@ function OnboardingInput({ onLoadDemo, onLoadIntl }: {
                 <ExternalLink size={12} color="#F97316" style={{ flexShrink: 0 }} />
                 <span style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#94A3B8", lineHeight: 1.5 }}>
                   <span style={{ color: "#F97316", fontWeight: 600 }}>如何获取链接？</span>
-                  {" "}打开网易大神 App → 守望先锋战绩 → 右上角分享 → 复制链接
+                  {"打开网易大神 App → 守望先锋战绩 → 右上角分享 → 复制链接"}
                 </span>
               </a>
             )}
