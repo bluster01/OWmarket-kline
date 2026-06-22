@@ -173,25 +173,158 @@ export default function About() {
             </div>
           </div>
 
-          {/* Version info */}
-          <div className="text-center py-4 fade-in-up delay-500 space-y-2">
-            <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.6rem', color: '#1E293B', letterSpacing: '0.2em' }}>
-              OW MARKET v0.2.0 · 2026-06-22 · 数据仅供参考
-            </div>
-            <a
-              href="https://github.com/bluster01/OWmarket-kline"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 transition-colors duration-150"
-              style={{ color: '#334155', textDecoration: 'none', fontFamily: 'Orbitron, monospace', fontSize: '0.55rem', letterSpacing: '0.1em' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#00B4D8')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#334155')}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          {/* GitHub Community Card */}
+          <div className="ow-card-lg p-6 fade-in-up delay-500" style={{ background: 'linear-gradient(135deg, rgba(13,21,38,0.95), rgba(0,180,216,0.06))', borderColor: 'rgba(0,180,216,0.25)' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#00B4D8" style={{ filter: 'drop-shadow(0 0 6px rgba(0,180,216,0.5))', flexShrink: 0 }}>
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
               </svg>
-              GITHUB / BLUSTER01 / OWMARKET-KLINE
-            </a>
+              <div>
+                <div style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '1rem', color: '#E2E8F0', letterSpacing: '0.05em' }}>开源社区</div>
+                <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.5rem', color: '#475569', letterSpacing: '0.15em' }}>BLUSTER01 / OWMARKET-KLINE</div>
+              </div>
+              <div className="ml-auto" style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.55rem', color: '#334155', letterSpacing: '0.1em' }}>v0.3.0 · 2026-06-22</div>
+            </div>
+
+            <div style={{ fontFamily: 'Noto Sans SC, sans-serif', fontSize: '0.8rem', color: '#64748B', lineHeight: 1.7, marginBottom: 16 }}>
+              本项目完全开源，欢迎 Star 关注进度、Watch 接收更新通知，或通过 Issues 提交你对指数设计的建议和反馈。
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex flex-wrap gap-3">
+              {/* Star */}
+              <a
+                href="https://github.com/bluster01/OWmarket-kline"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <div
+                  className="flex items-center gap-2 px-4 py-2.5 transition-all duration-200"
+                  style={{
+                    background: 'rgba(234,179,8,0.12)',
+                    border: '1px solid rgba(234,179,8,0.35)',
+                    borderRadius: 2,
+                    clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(234,179,8,0.22)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(234,179,8,0.6)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(234,179,8,0.12)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(234,179,8,0.35)'; }}
+                >
+                  <span style={{ fontSize: '1rem', lineHeight: 1 }}>⭐</span>
+                  <div>
+                    <div style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '0.85rem', color: '#EAB308', letterSpacing: '0.05em' }}>Star</div>
+                    <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.5rem', color: '#92400E', letterSpacing: '0.08em' }}>收藏项目</div>
+                  </div>
+                </div>
+              </a>
+
+              {/* Watch */}
+              <a
+                href="https://github.com/bluster01/OWmarket-kline/subscription"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <div
+                  className="flex items-center gap-2 px-4 py-2.5 transition-all duration-200"
+                  style={{
+                    background: 'rgba(0,180,216,0.1)',
+                    border: '1px solid rgba(0,180,216,0.3)',
+                    borderRadius: 2,
+                    clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(0,180,216,0.2)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,180,216,0.55)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(0,180,216,0.1)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,180,216,0.3)'; }}
+                >
+                  <span style={{ fontSize: '1rem', lineHeight: 1 }}>👁</span>
+                  <div>
+                    <div style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '0.85rem', color: '#00B4D8', letterSpacing: '0.05em' }}>Watch</div>
+                    <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.5rem', color: '#164E63', letterSpacing: '0.08em' }}>接收更新</div>
+                  </div>
+                </div>
+              </a>
+
+              {/* Issue */}
+              <a
+                href="https://github.com/bluster01/OWmarket-kline/issues/new?template=feedback.md&title=%5B反馈%5D+"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <div
+                  className="flex items-center gap-2 px-4 py-2.5 transition-all duration-200"
+                  style={{
+                    background: 'rgba(168,85,247,0.1)',
+                    border: '1px solid rgba(168,85,247,0.3)',
+                    borderRadius: 2,
+                    clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(168,85,247,0.2)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(168,85,247,0.55)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(168,85,247,0.1)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(168,85,247,0.3)'; }}
+                >
+                  <span style={{ fontSize: '1rem', lineHeight: 1 }}>💬</span>
+                  <div>
+                    <div style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '0.85rem', color: '#A78BFA', letterSpacing: '0.05em' }}>提交反馈</div>
+                    <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.5rem', color: '#4C1D95', letterSpacing: '0.08em' }}>ISSUES</div>
+                  </div>
+                </div>
+              </a>
+
+              {/* Fork */}
+              <a
+                href="https://github.com/bluster01/OWmarket-kline/fork"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <div
+                  className="flex items-center gap-2 px-4 py-2.5 transition-all duration-200"
+                  style={{
+                    background: 'rgba(34,197,94,0.08)',
+                    border: '1px solid rgba(34,197,94,0.25)',
+                    borderRadius: 2,
+                    clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(34,197,94,0.16)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(34,197,94,0.5)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(34,197,94,0.08)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(34,197,94,0.25)'; }}
+                >
+                  <span style={{ fontSize: '1rem', lineHeight: 1 }}>🍴</span>
+                  <div>
+                    <div style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '0.85rem', color: '#22C55E', letterSpacing: '0.05em' }}>Fork</div>
+                    <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.5rem', color: '#14532D', letterSpacing: '0.08em' }}>参与贡献</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            {/* Changelog teaser */}
+            <div className="mt-5 pt-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+              <div style={{ fontFamily: 'Rajdhani, sans-serif', fontSize: '0.65rem', color: '#475569', letterSpacing: '0.1em', marginBottom: 8 }}>CHANGELOG</div>
+              <div className="space-y-2">
+                {[
+                  { ver: 'v0.3.0', date: '2026-06-22', desc: 'MA/BOLL/RSI/MACD 技术指标、成交量、K线形态识别、英雄热力图', color: '#00B4D8' },
+                  { ver: 'v0.2.0', date: '2026-06-22', desc: '真正的金融 K 线蜡烛图（红绿涨跌、实体+影线）', color: '#22C55E' },
+                  { ver: 'v0.1.0', date: '2026-06-22', desc: '大盘首页、K线详情、数据提交、关于页面 MVP', color: '#64748B' },
+                ].map(item => (
+                  <div key={item.ver} className="flex items-start gap-3">
+                    <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.6rem', color: item.color, fontWeight: 700, flexShrink: 0, paddingTop: 2 }}>{item.ver}</div>
+                    <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.55rem', color: '#334155', flexShrink: 0, paddingTop: 2 }}>{item.date}</div>
+                    <div style={{ fontFamily: 'Noto Sans SC, sans-serif', fontSize: '0.72rem', color: '#64748B', lineHeight: 1.5 }}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom credit */}
+          <div className="text-center pb-6 fade-in-up">
+            <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.55rem', color: '#1E293B', letterSpacing: '0.2em' }}>
+              OW MARKET · 数据仅供参考，不构成预测
+            </div>
           </div>
 
         </div>

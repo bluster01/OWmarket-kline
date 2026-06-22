@@ -304,13 +304,46 @@ export default function Submit() {
             </div>
           )}
 
-          {/* Disclaimer */}
-          <div className="mt-5 p-4 rounded-sm fade-in-up delay-300" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div style={{ fontFamily: 'Noto Sans SC, sans-serif', fontSize: '0.7rem', color: '#334155', lineHeight: 1.7 }}>
-              本产品提供的"上分天气指数"和"大盘指数"仅基于社区自愿授权样本的历史数据聚合计算，
-              <strong style={{ color: '#475569' }}>不构成任何形式的预测或保证</strong>。
-              所有指数均为概率统计指标，样本量有限且可能存在偏差。
-              本产品与暴雪娱乐、网易、网易大神无任何关联。
+          {/* Feedback + Disclaimer */}
+          <div className="mt-5 space-y-3 fade-in-up delay-300">
+            {/* Feedback banner */}
+            <div className="flex items-center gap-4 p-4 rounded-sm" style={{ background: 'rgba(168,85,247,0.07)', border: '1px solid rgba(168,85,247,0.2)' }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '0.85rem', color: '#A78BFA', letterSpacing: '0.04em', marginBottom: 2 }}>对指数设计有想法？</div>
+                <div style={{ fontFamily: 'Noto Sans SC, sans-serif', fontSize: '0.72rem', color: '#64748B', lineHeight: 1.5 }}>欢迎到 GitHub Issues 提交你的建议，比如新增指标、调整权重、改进 UI 等。</div>
+              </div>
+              <a
+                href="https://github.com/bluster01/OWmarket-kline/issues/new?template=feedback.md&title=%5B反馈%5D+"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none', flexShrink: 0 }}
+              >
+                <div
+                  className="flex items-center gap-2 px-4 py-2 transition-all duration-200"
+                  style={{
+                    background: 'rgba(168,85,247,0.15)',
+                    border: '1px solid rgba(168,85,247,0.4)',
+                    borderRadius: 2,
+                    clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(168,85,247,0.28)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(168,85,247,0.15)'; }}
+                >
+                  <span style={{ fontSize: '0.9rem' }}>💬</span>
+                  <span style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '0.82rem', color: '#A78BFA', letterSpacing: '0.04em' }}>提交反馈</span>
+                </div>
+              </a>
+            </div>
+
+            {/* Disclaimer */}
+            <div className="p-4 rounded-sm" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div style={{ fontFamily: 'Noto Sans SC, sans-serif', fontSize: '0.7rem', color: '#334155', lineHeight: 1.7 }}>
+                本产品提供的"上分天气指数"和"大盘指数"仅基于社区自愿授权样本的历史数据聚合计算，
+                <strong style={{ color: '#475569' }}>不构成任何形式的预测或保证</strong>。
+                所有指数均为概率统计指标，样本量有限且可能存在偏差。
+                本产品与暴雪娱乐、网易、网易大神无任何关联。
+              </div>
             </div>
           </div>
         </div>
