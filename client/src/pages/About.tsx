@@ -173,6 +173,42 @@ export default function About() {
             </div>
           </div>
 
+          {/* Original Inspiration */}
+          <div className="ow-card p-5 fade-in-up delay-400" style={{ borderColor: 'rgba(249,115,22,0.25)' }}>
+            <div className="flex items-start gap-3 mb-3">
+              <div style={{ fontSize: '1.2rem', flexShrink: 0 }}>💡</div>
+              <div>
+                <div style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#F97316', letterSpacing: '0.05em', marginBottom: 2 }}>原始创意来源</div>
+                <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.5rem', color: '#78350F', letterSpacing: '0.12em' }}>ORIGINAL INSPIRATION</div>
+              </div>
+            </div>
+            <div style={{ fontFamily: 'Noto Sans SC, sans-serif', fontSize: '0.82rem', color: '#94A3B8', lineHeight: 1.8, marginBottom: 14 }}>
+              本项目的核心理念——将守望先锋 ELO 排位数据类比为股票市场进行分析——源自 B 站 UP 主的创意视频。
+              视频中提出了用股票思维理解排位涨跌、识别"上分窗口"的方法论，深度启发了本项目的指数设计和 K 线可视化方案。
+            </div>
+            <a
+              href="https://b23.tv/v8ErBTL"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 rounded-sm transition-all duration-200"
+              style={{ background: 'rgba(249,115,22,0.08)', border: '1px solid rgba(249,115,22,0.25)', textDecoration: 'none' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(249,115,22,0.15)'; (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(249,115,22,0.5)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(249,115,22,0.08)'; (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(249,115,22,0.25)'; }}
+            >
+              {/* Bilibili icon */}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#F97316" style={{ flexShrink: 0 }}>
+                <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
+              </svg>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: 'Noto Sans SC, sans-serif', fontSize: '0.82rem', color: '#F97316', fontWeight: 600, lineHeight: 1.3 }}>
+                  一种基于股票的elo分析方法和上分建议
+                </div>
+                <div style={{ fontFamily: 'Orbitron, monospace', fontSize: '0.5rem', color: '#92400E', letterSpacing: '0.1em', marginTop: 2 }}>BILIBILI · B23.TV/V8ERBТL</div>
+              </div>
+              <ExternalLink size={14} color="#92400E" style={{ flexShrink: 0 }} />
+            </a>
+          </div>
+
           {/* GitHub Community Card */}
           <div className="ow-card-lg p-6 fade-in-up delay-500" style={{ background: 'linear-gradient(135deg, rgba(13,21,38,0.95), rgba(0,180,216,0.06))', borderColor: 'rgba(0,180,216,0.25)' }}>
             <div className="flex items-center gap-3 mb-4">
