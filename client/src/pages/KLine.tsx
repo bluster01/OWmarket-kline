@@ -39,7 +39,7 @@ function OnboardingInput({ onLoad }: { onLoad: () => void }) {
       toast.error("请输入网易大神分享链接");
       return;
     }
-    if (!url.includes("nie.com") && !url.includes("b23.tv") && !url.includes("http")) {
+    if (!url.includes("act.ds.163.com") && !url.includes("ds.163.com") && !url.includes("nie.com") && !url.includes("http")) {
       toast.error("请输入有效的分享链接（以 https:// 开头）");
       return;
     }
@@ -98,7 +98,7 @@ function OnboardingInput({ onLoad }: { onLoad: () => void }) {
               输入你的网易大神分享链接
             </div>
             <div style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#475569", marginBottom: 16, lineHeight: 1.6 }}>
-              在网易大神 App → 战绩 → 分享，复制链接粘贴到下方
+              在网易大神 App 查看守望先锋战绩后，点击右上角分享，复制链接粘贴到下方
             </div>
 
             {/* Input row */}
@@ -116,7 +116,7 @@ function OnboardingInput({ onLoad }: { onLoad: () => void }) {
                   value={url}
                   onChange={e => setUrl(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="https://game.nie.com/..."
+                  placeholder="https://act.ds.163.com/f0834ac50394246e/detail?customerToken=..."
                   style={{
                     width: "100%",
                     background: "rgba(255,255,255,0.04)",
@@ -151,7 +151,7 @@ function OnboardingInput({ onLoad }: { onLoad: () => void }) {
 
             {/* How to get link */}
             <a
-              href="https://game.nie.com"
+              href="https://act.ds.163.com/f0834ac50394246e/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 p-3 rounded-sm transition-all duration-150"
@@ -166,7 +166,7 @@ function OnboardingInput({ onLoad }: { onLoad: () => void }) {
               <ExternalLink size={12} color="#F97316" style={{ flexShrink: 0 }} />
               <span style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#78350F", lineHeight: 1.5 }}>
                 <span style={{ color: "#F97316", fontWeight: 600 }}>如何获取链接？</span>
-                {" "}打开网易大神 App → 我的战绩 → 右上角分享 → 复制链接
+                {" "}打开网易大神 App → 守望先锋战绩 → 右上角分享 → 复制链接（格式：act.ds.163.com/...）
               </span>
             </a>
 
