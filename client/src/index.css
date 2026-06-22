@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* OW HUD Reborn Design System
+ * Theme: Overwatch HUD × Financial Dashboard
+ * Primary: #00B4D8 (OW Cyan)
+ * Accent: #F97316 (OW Orange)
+ * Background: #0A0E1A (Deep Space Blue)
+ * Fonts: Rajdhani (headings), Orbitron (numbers), Noto Sans SC (body)
+ */
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -40,77 +48,52 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* OW Custom Colors */
+  --color-ow-cyan: #00B4D8;
+  --color-ow-orange: #F97316;
+  --color-ow-green: #22C55E;
+  --color-ow-red: #EF4444;
+  --color-ow-bg: #0A0E1A;
+  --color-ow-card: #0D1526;
+  --color-ow-card2: #111827;
+  --color-ow-border: rgba(0, 180, 216, 0.25);
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
+  --radius: 0.25rem;
+  --background: oklch(0.09 0.02 240);
+  --foreground: oklch(0.88 0.01 220);
+  --card: oklch(0.11 0.025 240);
+  --card-foreground: oklch(0.88 0.01 220);
+  --popover: oklch(0.11 0.025 240);
+  --popover-foreground: oklch(0.88 0.01 220);
+  --primary: oklch(0.65 0.15 210);
+  --primary-foreground: oklch(0.09 0.02 240);
+  --secondary: oklch(0.15 0.02 240);
+  --secondary-foreground: oklch(0.75 0.01 220);
+  --muted: oklch(0.15 0.02 240);
+  --muted-foreground: oklch(0.55 0.02 220);
+  --accent: oklch(0.65 0.18 50);
+  --accent-foreground: oklch(0.09 0.02 240);
+  --destructive: oklch(0.58 0.22 25);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
-}
-
-.dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --border: oklch(0.65 0.15 210 / 20%);
+  --input: oklch(0.15 0.02 240);
+  --ring: oklch(0.65 0.15 210);
+  --chart-1: oklch(0.65 0.15 210);
+  --chart-2: oklch(0.65 0.18 50);
+  --chart-3: oklch(0.58 0.22 25);
+  --chart-4: oklch(0.55 0.18 145);
+  --chart-5: oklch(0.65 0.15 290);
+  --sidebar: oklch(0.09 0.025 240);
+  --sidebar-foreground: oklch(0.88 0.01 220);
+  --sidebar-primary: oklch(0.65 0.15 210);
+  --sidebar-primary-foreground: oklch(0.09 0.02 240);
+  --sidebar-accent: oklch(0.13 0.025 240);
+  --sidebar-accent-foreground: oklch(0.88 0.01 220);
+  --sidebar-border: oklch(0.65 0.15 210 / 15%);
+  --sidebar-ring: oklch(0.65 0.15 210);
 }
 
 @layer base {
@@ -119,6 +102,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #0A0E1A;
+    color: #E2E8F0;
+    font-family: 'Noto Sans SC', sans-serif;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -134,24 +120,11 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -162,16 +135,186 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1440px;
     }
+  }
+
+  /* OW HUD Card - Clip-path angled corners */
+  .ow-card {
+    background: rgba(13, 21, 38, 0.9);
+    border: 1px solid rgba(0, 180, 216, 0.25);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    position: relative;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ow-card:hover {
+    border-color: rgba(0, 180, 216, 0.5);
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.15);
+  }
+
+  /* OW HUD Card Large - bigger clip */
+  .ow-card-lg {
+    background: rgba(13, 21, 38, 0.9);
+    border: 1px solid rgba(0, 180, 216, 0.25);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    position: relative;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  /* OW Button */
+  .ow-btn {
+    background: transparent;
+    border: 1px solid #00B4D8;
+    color: #00B4D8;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    padding: 0.5rem 1.25rem;
+    transition: all 0.15s ease;
+  }
+  .ow-btn:hover {
+    background: rgba(0, 180, 216, 0.15);
+    box-shadow: 0 0 15px rgba(0, 180, 216, 0.4);
+  }
+  .ow-btn:active {
+    transform: scale(0.97);
+  }
+
+  .ow-btn-primary {
+    background: #00B4D8;
+    color: #0A0E1A;
+    border: 1px solid #00B4D8;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    padding: 0.5rem 1.25rem;
+    transition: all 0.15s ease;
+  }
+  .ow-btn-primary:hover {
+    background: #0CC8EE;
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+  }
+  .ow-btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  /* OW Section Title */
+  .ow-section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #00B4D8;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ow-section-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background: #00B4D8;
+    box-shadow: 0 0 8px #00B4D8;
+  }
+
+  /* OW Number Display */
+  .ow-number {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+  }
+
+  /* Hexagon background pattern */
+  .hex-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='52' viewBox='0 0 60 52'%3E%3Cpolygon points='30,2 58,17 58,35 30,50 2,35 2,17' fill='none' stroke='rgba(0,180,216,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 60px 52px;
+  }
+
+  /* Glow effects */
+  .glow-cyan {
+    box-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+  }
+  .glow-orange {
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
+  }
+  .glow-green {
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+  }
+  .glow-red {
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Scan line animation */
+  @keyframes scanline {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .scan-line {
+    animation: scanline 2s ease-in-out infinite;
+  }
+
+  /* Pulse glow */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(0, 180, 216, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(0, 180, 216, 0.6); }
+  }
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Fade in up */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in-up {
+    animation: fadeInUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+
+  /* Stagger delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+
+  /* OW Divider */
+  .ow-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 180, 216, 0.4), transparent);
+    margin: 1rem 0;
+  }
+
+  /* OW Badge */
+  .ow-badge {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid currentColor;
+    clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px));
+  }
+
+  /* Tab active indicator */
+  .ow-tab-active {
+    color: #00B4D8;
+    border-bottom: 2px solid #00B4D8;
+    box-shadow: 0 2px 8px rgba(0, 180, 216, 0.4);
   }
 }
