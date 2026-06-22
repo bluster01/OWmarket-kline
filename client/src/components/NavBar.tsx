@@ -7,9 +7,9 @@ import { BarChart2, TrendingUp, Upload, Info, Activity, Menu, X } from "lucide-r
 import { useState } from "react";
 
 const navItems = [
-  { path: "/", icon: BarChart2, label: "大盘首页", sublabel: "MARKET" },
-  { path: "/kline", icon: TrendingUp, label: "K线详情", sublabel: "K-LINE" },
-  { path: "/submit", icon: Upload, label: "数据提交", sublabel: "SUBMIT" },
+  { path: "/", icon: TrendingUp, label: "我的K线", sublabel: "MY K-LINE" },
+  { path: "/market", icon: BarChart2, label: "社区大盘", sublabel: "MARKET" },
+  { path: "/submit", icon: Upload, label: "提交数据", sublabel: "SUBMIT" },
   { path: "/about", icon: Info, label: "关于", sublabel: "ABOUT" },
 ];
 
