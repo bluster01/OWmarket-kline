@@ -223,13 +223,26 @@ function OnboardingInput({ onLoadDemo, onLoadIntl }: {
             </div>
 
             {/* Label */}
-            <div style={{ fontFamily: "Rajdhani, sans-serif", fontWeight: 700, fontSize: "0.85rem", color: "#00B4D8", letterSpacing: "0.1em", marginBottom: 4 }}>
-              {mode === "intl" ? "搜索玩家 / 输入 BattleTag" : "输入网易大神分享链接"}
+            {mode === "cn" && (
+              <div className="flex items-start gap-2 p-3 mb-4 rounded-sm" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)" }}>
+                <AlertCircle size={14} color="#EF4444" style={{ flexShrink: 0, marginTop: 1 }} />
+                <div style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.78rem", color: "#FCA5A5", lineHeight: 1.7 }}>
+                  <div style={{ fontWeight: 700, marginBottom: 2 }}>国服战绩暂无法读取真实数据</div>
+                  网易大神所有接口均需要 App 内部鉴权 Token，外部网页无法获取。目前国服守望先锋没有公开数据 API，社区也尚未找到绕过方案。
+                  <a href="https://github.com/bluster01/OWmarket-kline/issues" target="_blank" rel="noopener noreferrer"
+                    style={{ color: "#F87171", textDecoration: "underline", marginTop: 4, display: "inline-block" }}>
+                    如果你有解决思路，欢迎在 GitHub 提 Issue 讨论 →
+                  </a>
+                </div>
+              </div>
+            )}
+            <div style={{ fontFamily: "Rajdhani, sans-serif", fontWeight: 700, fontSize: "0.85rem", color: mode === "cn" ? "#EF4444" : "#00B4D8", letterSpacing: "0.1em", marginBottom: 4 }}>
+              {mode === "intl" ? "搜索玩家 / 输入 BattleTag" : "演示模式（国服暂不支持真实数据）"}
             </div>
             <div style={{ fontFamily: "Noto Sans SC, sans-serif", fontSize: "0.75rem", color: "#475569", marginBottom: 14, lineHeight: 1.6 }}>
               {mode === "intl"
                 ? "输入玩家名称自动搜索，或直接输入完整 BattleTag（PlayerName#1234）"
-                : "在网易大神 App 查看守望先锋战绩后，点击右上角分享，复制链接粘贴到下方"}
+                : "国服数据接口尚未开放，下方为演示模拟数据，不代表真实战绩"}
             </div>
 
             {/* Input row with search dropdown */}
